@@ -34,10 +34,6 @@
                 android:resource="@xml/widget_info" />
         </receiver>
 
-        <service
-            android:name=".WidgetUpdateService"
-            android:exported="false" />
-
     </application>
 
 </manifest>

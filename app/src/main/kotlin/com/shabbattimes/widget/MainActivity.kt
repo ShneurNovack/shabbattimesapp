@@ -111,8 +111,6 @@ class MainActivity : AppCompatActivity() {
         val widgetIds = appWidgetManager.getAppWidgetIds(
             ComponentName(this, ShabbatWidget::class.java)
         )
-        if (widgetIds.isNotEmpty()) {
-            WidgetUpdateService.startUpdate(this, widgetIds)
-        }
+        WidgetUpdateWorker.enqueue(this, widgetIds)
     }
 }

@@ -19,9 +19,9 @@ class ShabbatWidget : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         for (appWidgetId in appWidgetIds) {
-            setupRefreshIntent(context, appWidgetManager, appWidgetId)
+            setupClickIntents(context, appWidgetManager, appWidgetId)
         }
-        WidgetUpdateService.startUpdate(context, appWidgetIds)
+        WidgetUpdateWorker.enqueue(context, appWidgetIds)
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -29,16 +29,16 @@ class ShabbatWidget : AppWidgetProvider() {
         if (intent.action == ACTION_REFRESH) {
             val widgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
                 ?: IntArray(0)
-            WidgetUpdateService.startUpdate(context, widgetIds)
+            WidgetUpdateWorker.enqueue(context, widgetIds)
         }
     }
 
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
-        WidgetUpdateService.startUpdate(context, IntArray(0))
+        WidgetUpdateWorker.enqueue(context, IntArray(0))
     }
 
-    private fun setupRefreshIntent(
+    private fun setupClickIntents(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
@@ -47,24 +47,23 @@ class ShabbatWidget : AppWidgetProvider() {
             action = ACTION_REFRESH
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
         }
-        val pendingIntent = PendingIntent.getBroadcast(
+        val refreshPendingIntent = PendingIntent.getBroadcast(
             context,
             appWidgetId,
             refreshIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val mainActivityIntent = Intent(context, MainActivity::class.java)
         val mainPendingIntent = PendingIntent.getActivity(
             context,
             appWidgetId + 1000,
-            mainActivityIntent,
+            Intent(context, MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val views = RemoteViews(context.packageName, R.layout.widget_shabbat).apply {
-            setOnClickPendingIntent(R.id.tv_refresh, pendingIntent)
-            setOnClickPendingIntent(R.id.widget_root, pendingIntent)
+            setOnClickPendingIntent(R.id.tv_refresh, refreshPendingIntent)
+            setOnClickPendingIntent(R.id.widget_root, refreshPendingIntent)
             setOnClickPendingIntent(R.id.tv_shabbat_date, mainPendingIntent)
         }
 
