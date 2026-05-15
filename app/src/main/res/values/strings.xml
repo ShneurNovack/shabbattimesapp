@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shabbat Times</string>
+    <string name="widget_description">Displays this week\'s Shabbat candle lighting and Havdalah times for your location.</string>
+    <string name="candle_lighting">Candle lighting</string>
+    <string name="havdalah">Havdalah</string>
+    <string name="tap_to_refresh">Tap to refresh</string>
+    <string name="tap_to_grant">Tap to grant location</string>
+    <string name="grant_location">Grant Location Permission</string>
+    <string name="refresh_widget">Refresh Widget Now</string>
+    <string name="add_widget">Add Widget to Home Screen</string>
+    <string name="app_description">This app provides a home screen widget showing this week\'s Shabbat candle lighting and Havdalah times based on your current location.\n\nAdd the widget to your home screen by long-pressing an empty area on your home screen and selecting Widgets.</string>
+    <string name="widget_instructions">To add the widget:\n1. Long-press an empty spot on your home screen\n2. Tap "Widgets"\n3. Find "Shabbat Times" and drag it to your home screen</string>
+</resources>
