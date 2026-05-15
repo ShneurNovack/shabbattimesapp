@@ -43,8 +43,10 @@ class WidgetUpdateWorker(
     @SuppressLint("MissingPermission")
     private suspend fun fetchAndUpdateWidget(widgetIds: IntArray) {
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val allWidgetIds = widgetIds.ifEmpty {
+        val allWidgetIds = if (widgetIds.isEmpty()) {
             appWidgetManager.getAppWidgetIds(ComponentName(context, ShabbatWidget::class.java))
+        } else {
+            widgetIds
         }
 
         if (allWidgetIds.isEmpty()) return
